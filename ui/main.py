@@ -3,6 +3,7 @@ import tkinter as tk
 from PIL import Image, ImageTk
 from tkinter import filedialog
 
+from ui.mode1 import Ver
 
 #.withdraw()  隐藏窗口
 #.deiconify() 显示窗口
@@ -10,7 +11,7 @@ from tkinter import filedialog
 root = tk.Tk()
 reg = tk.Tk()
 
-reg.title("reg")
+reg.title("ver")
 reg.withdraw()
 cmp = tk.Tk()
 cmp.title("cmp")
@@ -27,11 +28,11 @@ def reg_w():
     print("reg")
     root.withdraw()
     reg.deiconify()
-    # max
     reg.state('zoomed')
-    # Start the Tkinter event loop
-    button_b = tk.Button(reg, text="back", command=lambda: back(reg))
-    button_b.pack(pady=10)
+
+    recognize_in_db = Ver(reg, root)
+    recognize_in_db.pack(fill="both", expand=True)
+
     reg.mainloop()
 def cmp_w():
     print("cmp")
