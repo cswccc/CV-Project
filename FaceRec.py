@@ -3,14 +3,12 @@ import pandas as pd
 
 
 class FaceRec:
-    def __init__(self, selected_model=None):
+    def __init__(self, selected_model="Facenet512"):
         self.models = ["VGG-Face", "Facenet", "Facenet512", "OpenFace", "DeepID", "ArcFace"]
-        if selected_model is None:
-            self.selected_model = "Facenet512"
 
         self.selected_model = selected_model
 
-    def verifyTwoFaces(self, face1_path, face2_path, selected_model=None):
+    def verifyTwoFaces(self, face1_path, face2_path, selected_model="Facenet512"):
         if selected_model is None:
             selected_model = self.selected_model
             
@@ -29,7 +27,7 @@ class FaceRec:
 
         return ret
     
-    def findSimilarFaces(self, face_path, database_path, selected_model=None):
+    def findSimilarFaces(self, face_path, database_path, selected_model="Facenet512"):
         if selected_model is None:
             selected_model = self.selected_model
 
