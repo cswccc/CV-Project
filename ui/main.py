@@ -9,25 +9,52 @@ from tkinter import filedialog
 
 root = tk.Tk()
 reg = tk.Tk()
+
+reg.title("reg")
 reg.withdraw()
 cmp = tk.Tk()
+cmp.title("cmp")
 cmp.withdraw()
 aly = tk.Tk()
+aly.title("aly")
 aly.withdraw()
+def back(win):
+    root.deiconify()
+    root.state('zoomed')
+    win.withdraw()
+
 def reg_w():
     print("reg")
     root.withdraw()
     reg.deiconify()
+    # max
+    reg.state('zoomed')
+    # Start the Tkinter event loop
+    button_b = tk.Button(reg, text="back", command=lambda: back(reg))
+    button_b.pack(pady=10)
+    reg.mainloop()
 def cmp_w():
     print("cmp")
     root.withdraw()
     cmp.deiconify()
+    # max
+    cmp.state('zoomed')
+    # Start the Tkinter event loop
+    button_b = tk.Button(cmp, text="back", command=lambda: back(cmp))
+    button_b.pack(pady=10)
+    cmp.mainloop()
 
 def aly_w():
     print("aly")
     root.withdraw()
-    aly.deiconify()
 
+    aly.deiconify()
+    # max
+    aly.state('zoomed')
+    # Start the Tkinter event loop
+    button_b = tk.Button(aly, text="back", command=lambda: back(aly))
+    button_b.pack(pady=10)
+    aly.mainloop()
 
 def main():
     print("start")
@@ -38,7 +65,7 @@ def main():
     # Create a button widget
     button_reg = tk.Button(root, text="reg", command=reg_w)
     button_cmp = tk.Button(root, text="cmp", command=cmp_w)
-    button_aly = tk.Button(root, text="aly", command=cmp_w)
+    button_aly = tk.Button(root, text="aly", command=aly_w)
 
     # Pack the button into the main window
     button_reg.pack(pady=10)
