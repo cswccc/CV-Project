@@ -1,14 +1,22 @@
 import cv2 as cv
 import numpy
 
-def drawRectangle(img, boxes, additionInfo=None, box_color=(0, 0, 255), fps=None):
+def imageRead(img_path):
+    img = cv.imread(img_path)
+
+    return img
+
+def imageResize(img, new_size):
+    img = cv.resize(img, new_size)
+
+    return img
+
+def drawRectangle(img, boxes, additionInfo=None, box_color=(0, 0, 255), fps=None, text_color=(0, 255, 0)):
     process_img = img.copy()
 
     for box in boxes:
-        x = box[0]
-        y = box[1]
-        w = box[2]
-        h = box[3]
+        x = box[0]; y = box[1]; w = box[2]; h = box[3]
+        
         process_img = cv.rectangle(process_img, (x, y), (x + w, y + h), box_color, 1)
 
         if additionInfo is not None:
