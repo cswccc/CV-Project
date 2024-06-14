@@ -41,7 +41,7 @@ def drawRectangle(img, box, additionInfo=None, box_color=(0, 0, 255), fps=None, 
         center_y = int(y + h / 2)
         text_size, baseline = cv.getTextSize(additionInfo, cv.FONT_HERSHEY_DUPLEX, 0.4, 1)
         text_x = center_x - int(text_size[0] / 2)
-        text_y = center_y - int(text_size[1] / 2)
+        text_y = y - int(text_size[1] / 2)
 
         process_img = cv.putText(process_img, additionInfo,(text_x, text_y),cv.FONT_HERSHEY_DUPLEX,0.4,(0,0,255),1)
     
