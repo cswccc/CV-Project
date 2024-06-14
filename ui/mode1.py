@@ -3,7 +3,7 @@ from tkinter import END, filedialog
 
 import cv2
 
-from FaceRec import FaceRec
+from utils.FaceRec import FaceRec
 from PIL import Image, ImageTk
 import os
 

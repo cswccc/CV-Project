@@ -3,10 +3,15 @@ import tkinter as tk
 from PIL import Image, ImageTk
 from tkinter import filedialog
 
-from ui.mode1 import Ver
+from mode1 import Ver
+from utils.FaceRec import FaceRec
+from utils.ImageProcess import *
+import cv2 as cv
 
 #.withdraw()  隐藏窗口
 #.deiconify() 显示窗口
+
+faceRec = FaceRec("ArcFace")
 
 root = tk.Tk()
 reg = tk.Tk()
@@ -19,6 +24,8 @@ cmp.withdraw()
 aly = tk.Tk()
 aly.title("aly")
 aly.withdraw()
+
+
 def back(win):
     root.deiconify()
     root.state('zoomed')
