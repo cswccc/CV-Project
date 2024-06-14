@@ -8,11 +8,11 @@ class FaceRec:
 
         self.selected_model = selected_model
 
-    def verifyTwoFaces(self, face1_path, face2_path, selected_model="Facenet512"):
+    def verifyTwoFaces(self, face1, face2, selected_model="Facenet512"):
         if selected_model is None:
             selected_model = self.selected_model
             
-        result = DeepFace.verify(img1_path=face1_path, img2_path=face2_path, model_name=selected_model)
+        result = DeepFace.verify(face1, face2, model_name=selected_model)
 
 
         ret = []
@@ -27,16 +27,19 @@ class FaceRec:
 
         return ret
     
-    def findSimilarFaces(self, face_path, database_path, selected_model="Facenet512"):
+    def findSimilarFaces(self, face, database_path, selected_model="Facenet512"):
         if selected_model is None:
             selected_model = self.selected_model
 
-        result = DeepFace.find(img_path=face_path, db_path=database_path, model_name=selected_model)
+        result = DeepFace.find(face, db_path=database_path, model_name=selected_model)
 
         identity = result[0].identity; target_x = result[0].target_x; target_y = result[0].target_y; target_w = result[0].target_w; target_h = result[0].target_h
 
         top_3 = []
         source_box = [result[0].source_x[0], result[0].source_y[0], result[0].source_w[0], result[0].source_h[0]]
+
+        print(result)
+        print('---')
 
         for i in range(min(len(identity), 3)):
             top_3.append({
@@ -46,8 +49,8 @@ class FaceRec:
 
         return top_3, source_box
     
-    def analyzeFace(self, face_path, actions=['emotion', 'age', 'gender']):
-        results = DeepFace.analyze(img_path=face_path, actions=actions)
+    def analyzeFace(self, face, actions=['emotion', 'age', 'gender']):
+        results = DeepFace.analyze(face, actions=actions)
 
 
         ret = []

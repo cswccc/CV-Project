@@ -8,9 +8,9 @@
 
 **Params:**
 
-face1_path: 第一个人脸照片的路径
+face1: 第一个人脸照片
 
-face2_path: 第二个人脸照片的路径
+face2: 第二个人脸照片
 
 selected_model(Optional): 跑DeepFace选择的model, 默认是"Facenet512"
 
@@ -21,7 +21,7 @@ ret: 两个人脸比较的信息, 包含verified(是否是一个人), face1_box(
 Example:
 
 ```python
-res = faceRec.verifyTwoFaces(face1_path=face1, face2_path=face2)
+res = faceRec.verifyTwoFaces(face1=face1, face2=face2)
 
 print(res)
 -----------------------------------------------------------------------------------------
@@ -42,7 +42,7 @@ True
 
 **Params:**
 
-face_path: 要比较的人脸照片路径
+face: 要比较的人脸照片
 
 database_path: 对比数据库路径
 
@@ -57,7 +57,7 @@ source_box: 比较照片的人脸框
 Example:
 
 ```python
-top_3, source_box = faceRec.findSimilarFaces(face_path=face1, database_path="test_images")
+top_3, source_box = faceRec.findSimilarFaces(face=face1, database_path="test_images")
 
 print(top_3, source_box)
 -----------------------------------------------------------------------------------------
@@ -72,7 +72,7 @@ Output:
 
 **Params:**
 
-face_path: 分析人脸路径
+face: 分析人脸路径
 actions: 要分析得到的信息, 默认是['emotion', 'age', 'gender']
 
 **Return:**
@@ -82,7 +82,7 @@ ret: 人脸的信息, 包括emotion, gender, age, box(人脸框)
 Example:
 
 ```python
-res = faceRec.analyzeFace(face_path=face1)
+res = faceRec.analyzeFace(face=face1)
 print(res)
 -----------------------------------------------------------------------------------------
 Output:
@@ -100,7 +100,7 @@ Output:
 
 
 
-#### imageResize(img_path) 
+#### imageResize(img) 
 
 图片size变换
 
