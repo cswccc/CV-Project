@@ -3,8 +3,7 @@ from FaceRec import FaceRec
 
 faceRec = FaceRec("Facenet512")
 
-face1 = "333.jpg"
-face2 = "test_images/2.png"
+face1 = "test.png"
 
 # print(faceRec.analyzeFace())
 

@@ -1,9 +1,5 @@
 from deepface import DeepFace
-import matplotlib.pyplot as plt
-from PIL import Image, ImageDraw
-import os
-import cv2
-import numpy as np
+import pandas as pd
 
 
 class FaceRec:
@@ -39,7 +35,18 @@ class FaceRec:
 
         result = DeepFace.find(img_path=face_path, db_path=database_path, model_name=selected_model)
 
-        return result
+        identity = result[0].identity; target_x = result[0].target_x; target_y = result[0].target_y; target_w = result[0].target_w; target_h = result[0].target_h
+
+        top_3 = []
+        source_box = [result[0].source_x[0], result[0].source_y[0], result[0].source_w[0], result[0].source_h[0]]
+
+        for i in range(min(len(identity), 3)):
+            top_3.append({
+                'identity': identity[i],
+                'box': [target_x[i], target_y[i], target_w[i], target_h[i]]
+            })
+
+        return top_3, source_box
     
     def analyzeFace(self, face_path, actions=['emotion', 'age', 'gender']):
         results = DeepFace.analyze(img_path=face_path, actions=actions)
