@@ -1,4 +1,4 @@
 deepface==0.0.92
 opencv-python==4.10.0.82
 matplotlib==3.7.5
-pillow
+pillow==9.5.0

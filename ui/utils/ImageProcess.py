@@ -19,7 +19,7 @@ def checkImageSize(img, max_w, max_h):
 def imageRead(img_path):
     img = cv.imread(img_path)
 
-    img = checkImageSize(img, 800, 800)
+    # img = checkImageSize(img, 800, 800)
 
     return img
 
