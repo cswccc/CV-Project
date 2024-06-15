@@ -1,6 +1,4 @@
 from deepface import DeepFace
-import cv2 as cv
-from utils.ImageProcess import *
 
 class FaceRec:
     """

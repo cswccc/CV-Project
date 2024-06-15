@@ -1,5 +1,4 @@
 import cv2 as cv
-import numpy
 
 def checkImageSize(img, max_w, max_h):
     w = img.shape[1]

@@ -1,5 +1,5 @@
-from utils.FaceRec import FaceRec
-from utils.ImageProcess import *
+from ui.utils.ImageProcess import *
+from ui.utils.FaceRec import *
 import cv2 as cv
 
 faceRec = FaceRec("ArcFace")
