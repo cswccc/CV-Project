@@ -3,8 +3,7 @@ import time
 import tkinter as tk
 from PIL import Image, ImageTk
 from tkinter import filedialog, font
-
-from mode1 import Ver
+from mode1 import Cmp
 from utils.FaceRec import FaceRec
 from utils.ImageProcess import *
 import cv2 as cv
@@ -16,11 +15,11 @@ from aly_util import aly_w
 
 
 root = tk.Tk()
-reg = tk.Tk()
+reg = tk.Toplevel()
 
 reg.title("ver")
 reg.withdraw()
-cmp = tk.Tk()
+cmp = tk.Toplevel()
 cmp.title("cmp")
 cmp.withdraw()
 aly = tk.Toplevel()
@@ -64,21 +63,18 @@ def reg_w():
     reg.deiconify()
     reg.state('zoomed')
 
-    recognize_in_db = Ver(reg, root)
-    recognize_in_db.pack(fill="both", expand=True)
-
     reg.mainloop()
 
 
 def cmp_w():
+    for widget in cmp.winfo_children():
+        widget.destroy()
     print("cmp")
     root.withdraw()
     cmp.deiconify()
-    # max
     cmp.state('zoomed')
-    # Start the Tkinter event loop
-    button_b = tk.Button(cmp, text="back", command=lambda: back(cmp))
-    button_b.pack(pady=10)
+    recognize_in_db = Cmp(cmp, root)
+    recognize_in_db.pack(fill="both", expand=True)
     cmp.mainloop()
 
 

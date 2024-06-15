@@ -4,7 +4,7 @@ import tkinter as tk
 from PIL import Image, ImageTk
 from tkinter import filedialog, font
 
-from mode1 import Ver
+from mode1 import Cmp
 from utils.FaceRec import FaceRec
 from utils.ImageProcess import *
 import cv2 as cv
