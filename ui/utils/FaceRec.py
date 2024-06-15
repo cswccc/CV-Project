@@ -1,5 +1,6 @@
 from deepface import DeepFace
 
+
 class FaceRec:
     """
     Face recognition with DeepFace.
@@ -7,9 +8,11 @@ class FaceRec:
         selected_model (str): The selected face recognition model.
         detect_backend (str): The selected detect backend.
     """
+
     def __init__(self, selected_model="Facenet512", detect_backend='opencv'):
         self.models = ["VGG-Face", "Facenet", "Facenet512", "OpenFace", "DeepID", "ArcFace"]
-        self.backends = ['opencv', 'ssd', 'dlib', 'mtcnn', 'fastmtcnn', 'retinaface',  'mediapipe', 'yolov8', 'yunet', 'centerface']
+        self.backends = ['opencv', 'ssd', 'dlib', 'mtcnn', 'fastmtcnn', 'retinaface', 'mediapipe', 'yolov8', 'yunet',
+                         'centerface']
 
         self.selected_model = selected_model
         self.detect_backend = detect_backend
@@ -23,9 +26,14 @@ class FaceRec:
         Returns:
             ret (list): The verify result for the two face, includes 'verified', 'face1_box', 'time_cost'.
         """
-        result = DeepFace.verify(face1, face2, model_name=self.selected_model, detector_backend=self.detect_backend)
-
         ret = []
+
+        try:
+            result = DeepFace.verify(face1, face2, model_name=self.selected_model, detector_backend=self.detect_backend)
+        except:
+            return ret
+
+
         f1_region = result['facial_areas']['img1']
         f2_region = result['facial_areas']['img2']
         ret.append({
@@ -36,7 +44,7 @@ class FaceRec:
         })
 
         return ret
-    
+
     def findSimilarFaces(self, face, database_path):
         """
         Select the most similar three face imgs from the database.
@@ -47,15 +55,25 @@ class FaceRec:
             top_3 (list): The first three similar image information, including 'identity' and 'box'.
             source_box (list):  Facial position information of the input image.
         """
-        results = DeepFace.find(face, db_path=database_path, model_name=self.selected_model, detector_backend=self.detect_backend)
-
         top_3 = []
         source_box = []
+
+        try:
+            results = DeepFace.find(face, db_path=database_path, model_name=self.selected_model,
+                                    detector_backend=self.detect_backend)
+        except:
+            return top_3, source_box
+
+
         for result in results:
             source_box.append([result.source_x[0], result.source_y[0], result.source_w[0], result.source_h[0]])
-            identity = result.identity; target_x = result.target_x; target_y = result.target_y; target_w = result.target_w; target_h = result.target_h
+            identity = result.identity
+            target_x = result.target_x
+            target_y = result.target_y
+            target_w = result.target_w
+            target_h = result.target_h
             now_top_3 = []
-            
+
             for i in range(min(len(identity), 3)):
                 now_top_3.append({
                     'identity': identity[i],
@@ -65,7 +83,7 @@ class FaceRec:
             top_3.append(now_top_3)
 
         return top_3, source_box
-    
+
     def analyzeFace(self, face, actions=['emotion', 'age', 'gender']):
         """
         Analyzing facial information in images.
@@ -75,9 +93,12 @@ class FaceRec:
         Returns:
             ret (list): Facial detection information.
         """
-        results = DeepFace.analyze(face, actions=actions, detector_backend=self.detect_backend)
-
         ret = []
+        try:
+            results = DeepFace.analyze(face, actions=actions, detector_backend=self.detect_backend)
+        except:
+            return ret
+
         for result in results:
             region = result['region']
 
@@ -89,9 +110,9 @@ class FaceRec:
             })
 
         return ret
-    
+
     def cameraCall(self, database_path=None):
         """
         DeepFace real-time face detection.
         """
-        DeepFace.stream(db_path = database_path, detector_backend=self.detect_backend)
+        DeepFace.stream(db_path=database_path, detector_backend=self.detect_backend)
