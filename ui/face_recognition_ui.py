@@ -15,6 +15,7 @@ class FaceRecognitionApp:
         self.top_3 = []
         self.source_box = []
         self.tot_faces = 0
+        self.matched_identities = []  # 存储匹配到的图片的 identity
 
         self.root = root
         self.back_callback = back_callback
@@ -64,10 +65,14 @@ class FaceRecognitionApp:
         self.label_big_image.place(relx=0.3, rely=0.5, anchor=tk.CENTER)
 
         self.label_similar_faces = []
+        self.label_similar_identities = []  # 存储显示 identity 的标签
         for i in range(3):
-            label = tk.Label(self.root, bg="white")
-            label.place(relx=0.7, rely=0.3 + i * 0.2, anchor=tk.CENTER)
-            self.label_similar_faces.append(label)
+            label_face = tk.Label(self.root, bg="white")
+            label_face.place(relx=0.7, rely=0.3 + i * 0.2, anchor=tk.CENTER)
+            self.label_similar_faces.append(label_face)
+            label_identity = tk.Label(self.root, text="", font=("Arial", 12), bg="white")
+            label_identity.place(relx=0.7, rely=0.35 + i * 0.2, anchor=tk.CENTER)
+            self.label_similar_identities.append(label_identity)
 
     def select_face(self):
         self.face_path = filedialog.askopenfilename(title="Select Image")
@@ -102,6 +107,7 @@ class FaceRecognitionApp:
         self.top_3 = []
         self.source_box = []
         self.tot_faces = 0
+        self.matched_identities = []  # 重置匹配到的图片的 identity
 
         # 查找相似人脸
         try:
@@ -114,22 +120,30 @@ class FaceRecognitionApp:
         self.source_box = source_box
         self.tot_faces = len(top_3)
 
+        # 存储匹配到的图片的 identity
+        for matched_faces in top_3:
+            for matched in matched_faces:
+                self.matched_identities.append(matched['identity'])
+
     def display_face(self, idx):
         source_img = imageProcess.imageRead(self.face_path)
         source_img = imageProcess.drawRectangle(source_img, self.source_box[idx])
 
         top_3_image = []
+        top_3_identity = []
 
         for matched in self.top_3[idx]:
             matched_img = imageProcess.imageRead(matched['identity'])
             matched_img = imageProcess.drawRectangle(matched_img, matched['box'])
             top_3_image.append(matched_img)
+            top_3_identity.append(matched['identity'])
 
         # 调整左侧大图的大小，使其宽度等于右侧三个小图宽度之和
         self.display_image_from_array(source_img, self.label_big_image, (400, 400))
 
         for i in range(len(top_3_image)):
             self.display_image_from_array(top_3_image[i], self.label_similar_faces[i], (200, 200))
+            self.label_similar_identities[i].config(text=f"identity: {top_3_identity[i]}")
 
     def prev_face(self):
         if self.tot_faces != 0 and self.current_face_index > 0:
