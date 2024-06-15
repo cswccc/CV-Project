@@ -44,7 +44,10 @@ aly.protocol("WM_DELETE_WINDOW", on_closing)
 
 
 
-def back(win):
+def back(win,image_label,info_label):
+    image_label.destroy()
+    info_label.destroy()
+
     root.deiconify()
     root.state('zoomed')
     win.withdraw()
@@ -65,11 +68,13 @@ def show(image_label,info_label):
     face_aly = imageRead(selected_file)
     result = faceRec.analyzeFace(face=face_aly)
     out = face_aly.copy()
-    for idx, r in enumerate(result):
-        info = 'ID: ' + str(idx) + ' ' + r['emotion'] + ' ' + r['gender'] + ' ' + str(r['age']) + '\n'
-        out = drawRectangle(out, r['box'], additionInfo=info)
-        info_show += info
-
+    if len(result) == 0:
+        info_show += "检测不到人脸"
+    else:
+        for idx, r in enumerate(result):
+            info = 'ID: ' + str(idx) + ' ' + r['emotion'] + ' ' + r['gender'] + ' ' + str(r['age'])
+            out = drawRectangle(out, r['box'], additionInfo=info)
+            info_show += info + '\n'
     # Load an image
     out = cv.cvtColor(out, cv.COLOR_BGR2RGB)
     image = Image.fromarray(out)
@@ -131,16 +136,17 @@ def aly_w():
     label = tk.Label(aly, image=photo)
     label.pack(fill=tk.BOTH, expand=True)
     # Start the Tkinter event loop
+    image_label = tk.Label(aly)
+    info_label = tk.Label(aly, bg="green")
     custom_font = font.Font(family="Helvetica", size=20)
-    button_b = tk.Button(aly, text="back", font=custom_font, width=10, height=5, bg="green", command=lambda: back(aly))
+    button_b = tk.Button(aly, text="back", font=custom_font, width=10, height=5, bg="green", command=lambda: back(aly,image_label,info_label))
     button_b.place(x=0, y=0)
 
-    image_label = tk.Label(aly, text="人脸识别", font=custom_font, width=10, height=3, bg="green")
-    image_label.place(x=800, y=0)
+    label_font = font.Font(family="Helvetica", size=30)
+    text_label = tk.Label(aly, text="欢迎使用人脸分析功能", font=custom_font, width=20, height=4, bg="green")
+    text_label.place(x=725, y=0)
 
-    image_label = tk.Label(aly)
-    info_label = tk.Label(aly)
-    info_label.config(bg="green")
+
     button_select = tk.Button(aly, text="选择图片", font=custom_font, width=10, height=3, bg="green", command=lambda: show(image_label,info_label))
     button_select.place(x=800, y=150)
     aly.mainloop()
@@ -161,12 +167,16 @@ def main():
     custom_font = font.Font(family="Helvetica", size=20)
     button_reg = tk.Button(root, text="Face Recognition", font=custom_font, width=20, height=3, bg="green", command=reg_w)
     button_cmp = tk.Button(root, text="Face Comparison", font=custom_font, width=20, height=3, bg="green", command=cmp_w)
-    button_aly = tk.Button(root, text="Face Analysis", font=custom_font, width=20, height=3, bg="green", command=aly_w)
+
+    # image_label = tk.Label(aly)
+    # info_label = tk.Label(aly, bg="green")
+    # button_aly = tk.Button(root, text="Face Analysis", font=custom_font, width=20, height=3, bg="green", command=lambda:aly_w(image_label, info_label))
+    button_aly = tk.Button(root, text="Face Analysis", font=custom_font, width=20, height=3, bg="green",command=aly_w)
 
     # Pack the button into the main window
-    button_reg.place(x=600, y=50)
-    button_cmp.place(x=600, y=350)
-    button_aly.place(x=600, y=650)
+    button_reg.place(x=700, y=50)
+    button_cmp.place(x=700, y=350)
+    button_aly.place(x=700, y=650)
     # max
     root.state('zoomed')
     # Start the Tkinter event loop
