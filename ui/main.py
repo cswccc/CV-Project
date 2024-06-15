@@ -8,6 +8,8 @@ from utils.FaceRec import FaceRec
 from utils.ImageProcess import *
 import cv2 as cv
 from aly_util import aly_w
+from face_recognition_ui import FaceRecognitionApp  # 确保正确导入
+
 
 
 # .withdraw()  隐藏窗口
@@ -57,12 +59,13 @@ def back(win,image_label,info_label):
 
 
 
+
 def reg_w():
     print("reg")
     root.withdraw()
     reg.deiconify()
     reg.state('zoomed')
-
+    app = FaceRecognitionApp(reg)  # 创建 FaceRecognitionApp 实例
     reg.mainloop()
 
 
@@ -107,7 +110,8 @@ def main():
     root.mainloop()
 
 
-main()
+if __name__ == "__main__":
+    main()
 
 # 选文件
 # def select_file():
