@@ -62,7 +62,8 @@ top_3, source_box = faceRec.findSimilarFaces(face=face1, database_path="test_ima
 print(top_3, source_box)
 -----------------------------------------------------------------------------------------
 Output:
-[{'identity': 'test_images\\2.png', 'box': [158, 124, 262, 262]}, {'identity': 'test_images\\7.png', 'box': [129, 76, 252, 252]}, {'identity': 'test_images\\1.jpg', 'box': [714, 258, 533, 533]}], [158, 124, 262, 262]
+[{'identity': '../VGG-cut\\n000001\\0001_01.jpg', 'box': [40, 66, 103, 103]}, {'identity': '../VGG-cut\\n000001\\0023_01.jpg', 'box': [76, 27, 182, 182]}, {'identity': '../VGG-cut\\n000001\\0002_01.jpg', 'box': [88, 76, 300, 300]}]
+[40, 66, 103, 103]
 ****************************************************************************************
 ```
 

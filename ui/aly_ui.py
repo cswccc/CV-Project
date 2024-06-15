@@ -8,13 +8,17 @@ from mode1 import Cmp
 from utils.FaceRec import FaceRec
 from utils.ImageProcess import *
 import cv2 as cv
-faceRec = FaceRec("ArcFace")
+
+faceRec = FaceRec("VGG-Face", 'opencv')
+
+
 def select_file():
     print("select")
     file_path = filedialog.askopenfilename()
     return file_path
 
-def show(image_label,info_label,aly):
+
+def show(image_label, info_label, aly):
     global image_show
     global info_show
     info_show = ""
@@ -27,8 +31,8 @@ def show(image_label,info_label,aly):
         info_show += "检测不到人脸"
     else:
         for idx, r in enumerate(result):
-            info = 'ID: ' + str(idx) + ' ' + r['emotion'] + ' ' + r['gender'] + ' ' + str(r['age'])
-            out = drawRectangle(out, r['box'], additionInfo=info)
+            info = 'ID ' + str(idx) + ': ' + r['emotion'] + ' ' + r['gender'] + ' ' + str(r['age'])
+            out = drawRectangle(out, r['box'], additionInfo='ID: ' + str(idx))
             info_show += info + '\n'
     # Load an image
     out = cv.cvtColor(out, cv.COLOR_BGR2RGB)
@@ -52,7 +56,8 @@ def show(image_label,info_label,aly):
     print("show over")
     aly.mainloop()
 
-def aly_w(aly,root,back):
+
+def aly_w(aly, root, back):
     print("aly")
     root.withdraw()
 
@@ -69,14 +74,15 @@ def aly_w(aly,root,back):
     image_label = tk.Label(aly)
     info_label = tk.Label(aly, bg="green")
     custom_font = font.Font(family="Helvetica", size=20)
-    button_b = tk.Button(aly, text="back", font=custom_font, width=10, height=5, bg="green", command=lambda: back(aly,image_label,info_label))
+    button_b = tk.Button(aly, text="back", font=custom_font, width=10, height=5, bg="green",
+                         command=lambda: back(aly, image_label, info_label))
     button_b.place(x=0, y=0)
 
     label_font = font.Font(family="Helvetica", size=30)
     text_label = tk.Label(aly, text="欢迎使用人脸分析功能", font=custom_font, width=20, height=4, bg="green")
     text_label.place(x=725, y=0)
 
-
-    button_select = tk.Button(aly, text="选择图片", font=custom_font, width=10, height=3, bg="green", command=lambda: show(image_label,info_label,aly))
+    button_select = tk.Button(aly, text="选择图片", font=custom_font, width=10, height=3, bg="green",
+                              command=lambda: show(image_label, info_label, aly))
     button_select.place(x=800, y=150)
     aly.mainloop()

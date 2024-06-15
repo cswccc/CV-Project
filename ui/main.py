@@ -7,7 +7,7 @@ from mode1 import Cmp
 from utils.FaceRec import FaceRec
 from utils.ImageProcess import *
 import cv2 as cv
-from aly_util import aly_w
+from aly_ui import aly_w
 from face_recognition_ui import FaceRecognitionApp  # 确保正确导入
 
 
