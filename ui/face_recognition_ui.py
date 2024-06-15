@@ -30,7 +30,7 @@ class FaceRecognitionApp:
         self.background_label.place(relwidth=1, relheight=1)
 
         self.face_path = None
-        self.database_path = "C:\\Users\\ZCR\\Desktop\\VGG-cut\\VGG-cut\\n001146"  # 数据库路径
+        self.database_path = "../../Dataset/ourself/find/find"  # 数据库路径
 
         self.current_face_index = 0
         self.faces = []
@@ -112,6 +112,7 @@ class FaceRecognitionApp:
         # 查找相似人脸
         try:
             top_3, source_box = faceRec.findSimilarFaces(face=img, database_path=self.database_path)
+            print(top_3, source_box)
         except Exception as e:
             print("Error finding similar faces:", e)
             return
@@ -126,6 +127,9 @@ class FaceRecognitionApp:
                 self.matched_identities.append(matched['identity'])
 
     def display_face(self, idx):
+        if self.tot_faces == 0:
+            return
+
         source_img = imageProcess.imageRead(self.face_path)
         source_img = imageProcess.drawRectangle(source_img, self.source_box[idx])
 

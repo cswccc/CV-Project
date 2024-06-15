@@ -66,6 +66,8 @@ class FaceRec:
 
 
         for result in results:
+            if result.size == 0:
+                continue
             source_box.append([result.source_x[0], result.source_y[0], result.source_w[0], result.source_h[0]])
             identity = result.identity
             target_x = result.target_x
