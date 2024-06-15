@@ -11,12 +11,13 @@ from tkinter import ttk
 faceRec = FaceRec(selected_model="VGG-Face", detect_backend="opencv")
 
 class FaceRecognitionApp:
-    def __init__(self, root):
+    def __init__(self, root, back_callback):
         self.top_3 = []
         self.source_box = []
         self.tot_faces = 0
 
         self.root = root
+        self.back_callback = back_callback
         self.root.title("Face Recognition")
         self.root.geometry("1200x800")
 
@@ -36,46 +37,36 @@ class FaceRecognitionApp:
         self.create_widgets()
 
     def create_widgets(self):
-        # 容器框架
-        self.frame_container = tk.Frame(self.root, bg='white', bd=2, relief=tk.RIDGE)
-        self.frame_container.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
-
         # 标题
-        self.label_title = tk.Label(self.frame_container, text="Face Recognition", font=("Arial", 24, "bold"), bg="white")
-        self.label_title.grid(row=0, column=0, columnspan=4, pady=10)
+        self.label_title = tk.Label(self.root, text="Face Recognition", font=("Arial", 24, "bold"), bg="white")
+        self.label_title.place(relx=0.5, rely=0.05, anchor=tk.CENTER)
 
         # 选择图片按钮和标签
-        self.btn_select_face = ttk.Button(self.frame_container, text="Select Image", command=self.select_face)
-        self.btn_select_face.grid(row=1, column=0, columnspan=4, pady=10)
+        self.btn_select_face = ttk.Button(self.root, text="Select Image", command=self.select_face)
+        self.btn_select_face.place(relx=0.5, rely=0.15, anchor=tk.CENTER)
 
-        self.label_face = tk.Label(self.frame_container, text="No image selected", font=("Arial", 12), bg="white")
-        self.label_face.grid(row=2, column=0, columnspan=4, pady=5)
+        self.label_face = tk.Label(self.root, text="No image selected", font=("Arial", 12), bg="white")
+        self.label_face.place(relx=0.5, rely=0.2, anchor=tk.CENTER)
 
         # 左右切换按钮
-        self.btn_prev = ttk.Button(self.frame_container, text="Previous Face", command=self.prev_face)
-        self.btn_prev.grid(row=3, column=0, pady=10, padx=5)
+        self.btn_prev = ttk.Button(self.root, text="Previous Face", command=self.prev_face)
+        self.btn_prev.place(relx=0.4, rely=0.9, anchor=tk.CENTER)
 
-        self.btn_next = ttk.Button(self.frame_container, text="Next Face", command=self.next_face)
-        self.btn_next.grid(row=3, column=1, pady=10, padx=5)
+        self.btn_next = ttk.Button(self.root, text="Next Face", command=self.next_face)
+        self.btn_next.place(relx=0.6, rely=0.9, anchor=tk.CENTER)
 
-        # 保存和退出按钮
-        self.btn_save = ttk.Button(self.frame_container, text="Save Results", command=self.save_results)
-        self.btn_save.grid(row=3, column=2, pady=10, padx=5)
-
-        self.btn_exit = ttk.Button(self.frame_container, text="Exit", command=self.root.quit)
-        self.btn_exit.grid(row=3, column=3, pady=10, padx=5)
+        # 返回按钮
+        self.btn_back = ttk.Button(self.root, text="Back", command=self.back)
+        self.btn_back.place(relx=0.8, rely=0.9, anchor=tk.CENTER)
 
         # 大图和小图显示区域
-        self.frame_images = tk.Frame(self.frame_container, bg="white", bd=2, relief=tk.RIDGE)
-        self.frame_images.grid(row=4, column=0, columnspan=4, pady=20)
-
-        self.label_big_image = tk.Label(self.frame_images, bg="white")
-        self.label_big_image.grid(row=0, column=0, rowspan=3, padx=20, pady=20)
+        self.label_big_image = tk.Label(self.root, bg="white")
+        self.label_big_image.place(relx=0.3, rely=0.5, anchor=tk.CENTER)
 
         self.label_similar_faces = []
         for i in range(3):
-            label = tk.Label(self.frame_images, bg="white")
-            label.grid(row=i, column=1, padx=20, pady=10)
+            label = tk.Label(self.root, bg="white")
+            label.place(relx=0.7, rely=0.3 + i * 0.2, anchor=tk.CENTER)
             self.label_similar_faces.append(label)
 
     def select_face(self):
@@ -135,7 +126,7 @@ class FaceRecognitionApp:
             top_3_image.append(matched_img)
 
         # 调整左侧大图的大小，使其宽度等于右侧三个小图宽度之和
-        self.display_image_from_array(source_img, self.label_big_image, (600, 600))
+        self.display_image_from_array(source_img, self.label_big_image, (400, 400))
 
         for i in range(len(top_3_image)):
             self.display_image_from_array(top_3_image[i], self.label_similar_faces[i], (200, 200))
@@ -158,10 +149,14 @@ class FaceRecognitionApp:
         label.config(image=img)
         label.image = img
 
-    def save_results(self):
-        messagebox.showinfo("Info", "Results saved successfully!")
+    def back(self):
+        self.back_callback(self.root)
 
 if __name__ == "__main__":
     root = tk.Tk()
-    app = FaceRecognitionApp(root)
+    def back_callback(win):
+        win.withdraw()
+        root.deiconify()
+        root.state('zoomed')
+    app = FaceRecognitionApp(root, back_callback)
     root.mainloop()
